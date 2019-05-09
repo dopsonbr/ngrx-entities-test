@@ -2,7 +2,135 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "",
-  "projects": {},
+  "projects": {
+    "entity-test": {
+      "root": "apps/entity-test/",
+      "sourceRoot": "apps/entity-test/src",
+      "projectType": "application",
+      "prefix": "ngrx-test",
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "inlineTemplate": true,
+          "inlineStyle": true,
+          "style": "scss"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/entity-test",
+            "index": "apps/entity-test/src/index.html",
+            "main": "apps/entity-test/src/main.ts",
+            "polyfills": "apps/entity-test/src/polyfills.ts",
+            "tsConfig": "apps/entity-test/tsconfig.app.json",
+            "assets": [
+              "apps/entity-test/src/favicon.ico",
+              "apps/entity-test/src/assets"
+            ],
+            "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "apps/entity-test/src/styles.scss"
+            ],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/entity-test/src/environments/environment.ts",
+                  "with": "apps/entity-test/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "entity-test:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "entity-test:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "entity-test:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/entity-test/tsconfig.app.json",
+              "apps/entity-test/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/builders:jest",
+          "options": {
+            "jestConfig": "apps/entity-test/jest.config.js",
+            "tsConfig": "apps/entity-test/tsconfig.spec.json",
+            "setupFile": "apps/entity-test/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "entity-test-e2e": {
+      "root": "apps/entity-test-e2e",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/builders:cypress",
+          "options": {
+            "cypressConfig": "apps/entity-test-e2e/cypress.json",
+            "tsConfig": "apps/entity-test-e2e/tsconfig.e2e.json",
+            "devServerTarget": "entity-test:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "entity-test:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/entity-test-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
@@ -10,5 +138,6 @@
     },
     "defaultCollection": "@nrwl/schematics"
   },
-  "schematics": {}
+  "schematics": {},
+  "defaultProject": "entity-test"
 }
